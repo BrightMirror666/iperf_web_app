@@ -1,0 +1,91 @@
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="static/js/progressbar.min.js"></script>
+
+<div id="container"></div>
+
+<style>
+#container {
+  margin: 20px;
+  width: 400px;
+  height: 200px;
+}
+
+</style>
+
+<html>
+
+  <body>
+    <div id="iperf">25</div>
+    <a href=# id="test"><button>click to trigger iperf result</button></a>
+  
+  </body>
+  
+  
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+          $('a#test').bind('click', function() {
+            document.getElementById('container').innerHTML=""
+
+            $.get('/backgroundIperf',
+                function(data) {
+
+                  console.log(typeof data)
+                  console.log(data)
+                  var iperf = document.getElementById("iperf")
+                  iperf.innerHTML = data
+                  var bar = new ProgressBar.SemiCircle(container, {
+  strokeWidth: 6,
+  color: '#FFEA82',
+  trailColor: '#eee',
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 9000,
+  svgStyle: null,
+  text: {
+    value: '',
+    alignToBottom: false
+  },
+  from: {color: '#FFEA82'},
+  to: {color: '#ED6A5A'},
+  // Set default step function for all animate calls
+  step: (state, bar) => {
+    bar.path.setAttribute('stroke', state.color);
+    var result = document.getElementById('iperf').innerHTML
+    console.log(result)
+    var value = Math.round(bar.value() * result)+" mbps";
+    if (value === 0) {
+      bar.setText('');
+    } else {
+      bar.setText(value);
+    }
+
+    bar.text.style.color = state.color;
+  }
+});
+bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+bar.text.style.fontSize = '2rem';
+bar.animate(1.0);  // Number from 0.0 to 1.0
+
+
+
+              //do nothing
+            });
+            return false;
+          });
+        });
+
+
+// progressbar.js@1.0.0 version is used
+// Docs: http://progressbarjs.readthedocs.org/en/1.0.0/
+
+
+</script>
+
+
+
+
+</html>
